@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Modern SaaS design tokens (Tailwind v4 @theme)
+   Clean white surfaces, indigo accent, soft shadows, refined type
+   ============================================================ */
+@theme {
+  /* Brand — indigo/blue accent scale */
+  --color-brand-50:  #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+
+  /* Soft card shadow for floating surfaces */
+  --shadow-card: 0 1px 3px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+  --shadow-card-lg: 0 10px 30px -12px rgb(15 23 42 / 0.18), 0 4px 6px -4px rgb(15 23 42 / 0.08);
+}
+
+/* Rails wraps errored fields in .field_with_errors — neutralize the wrapper so
+   it doesn't break Tailwind utility classes on the child input, and instead
+   add a subtle red tint on the input/select itself. */
+.field_with_errors {
+  display: contents;
+}
+.field_with_errors input,
+.field_with_errors select,
+.field_with_errors textarea {
+  border-color: var(--color-rose-400);
+  box-shadow: 0 0 0 3px rgb(244 63 94 / 0.12);
+}
