@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Service Appointment Scheduler" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Scheduler">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Tailwind build (compiled by `bin/rails tailwindcss:watch`).
+        Guard the link so the page never 500s if the build artifact is absent
+        (fresh checkout / after `tailwindcss:clobber` / CI before first build).
+        In that case pages render unstyled instead of crashing. %>
+    <% if tailwind_asset_exists? %>
+      <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <% end %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-full bg-slate-50 text-slate-900 antialiased flex flex-col">
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
+      <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <%= link_to root_path, class: "flex items-center gap-2" do %>
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/>
+            </svg>
+          </span>
+          <span class="text-base font-semibold tracking-tight text-slate-900">Service Scheduler</span>
+        <% end %>
+
+        <nav class="hidden items-center gap-1 md:flex">
+          <%= link_to "Appointments", appointments_path, class: nav_link_class(:appointments, appointments_path) %>
+          <%= link_to "Dealerships", dealerships_path, class: nav_link_class(:dealerships, dealerships_path) %>
+          <%= link_to "Services", service_types_path, class: nav_link_class(:services, service_types_path) %>
+          <%= link_to "Customers", customers_path, class: nav_link_class(:customers, customers_path) %>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <%= link_to new_appointment_path,
+                class: "inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600" do %>
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/></svg>
+            Book
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <div class="space-y-6">
+        <%= render "application/flash" %>
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <p class="text-center text-xs text-slate-400">Service Appointment Scheduler · resource-constrained booking with PostgreSQL exclusion constraints</p>
+      </div>
+    </footer>
+  </body>
+</html>
