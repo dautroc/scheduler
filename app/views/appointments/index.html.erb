@@ -1,0 +1,67 @@
+<%= render "application/page_header",
+      title: "Appointments",
+      subtitle: "Recent appointments across all dealerships.",
+      actions: link_to(new_appointment_path, class: "inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700") do %>
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/></svg>
+        New appointment
+      <% end %>
+
+<% if @appointments.any? %>
+  <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead>
+          <tr class="bg-slate-50/80">
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">When</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Customer</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Vehicle</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Service</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Technician</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Bay</th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <% @appointments.each do |a| %>
+            <tr class="transition-colors hover:bg-slate-50">
+              <td class="whitespace-nowrap px-4 py-3 align-top">
+                <%= link_to appointment_path(a), class: "font-medium text-slate-900 hover:text-brand-700" do %>
+                  <%= a.starts_at.in_time_zone(Time.zone).strftime("%b %-d") %>
+                  <span class="font-mono text-slate-500"><%= a.starts_at.in_time_zone(Time.zone).strftime("%H:%M") %></span>
+                <% end %>
+                <div class="font-mono text-xs text-slate-400">→ <%= fmt_time(a.ends_at) %></div>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2.5">
+                  <span class="flex h-8 w-8 flex-none items-center justify-center rounded-full text-xs font-semibold text-white <%= avatar_color(a.customer.name) %>"><%= initials(a.customer.name) %></span>
+                  <div class="min-w-0">
+                    <%= link_to a.customer.name, customer_path(a.customer), class: "block truncate font-medium text-slate-900 hover:text-brand-700" %>
+                    <span class="block truncate text-xs text-slate-400"><%= a.customer.email %></span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-slate-600">
+                <div class="font-medium text-slate-800"><%= "#{a.vehicle.make} #{a.vehicle.model}" %></div>
+                <div class="text-xs text-slate-400"><%= a.vehicle.year %><% if a.vehicle.vin %> · <%= a.vehicle.vin %><% end %></div>
+              </td>
+              <td class="px-4 py-3">
+                <div class="font-medium text-slate-800"><%= a.service_type.name %></div>
+                <div class="text-xs text-slate-400"><%= a.service_type.duration_minutes %> min</div>
+              </td>
+              <td class="px-4 py-3 text-slate-600"><%= a.technician.name %></td>
+              <td class="px-4 py-3 text-slate-600"><span class="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-600"><%= a.service_bay.name %></span></td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize ring-1 ring-inset <%= status_badge_class(a.status) %>"><%= a.status %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <%= render "application/empty_state",
+        message: "No appointments yet.",
+        action: link_to("Book the first one", new_appointment_path,
+              class: "inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700") %>
+<% end %>

@@ -1,0 +1,82 @@
+<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Appointment #<%= @appointment.id %></h1>
+    <p class="mt-1 text-sm text-slate-500">Confirmed booking record linking customer, vehicle, technician, and bay.</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <%= link_to appointments_path, class: "inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50" do %>
+      <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd"/></svg>
+      All appointments
+    <% end %>
+    <% unless @appointment.cancelled? %>
+      <%= button_to "Cancel appointment", cancel_appointment_path(@appointment),
+            method: :patch,
+            data: { turbo_confirm: "Cancel this appointment?" },
+            class: "inline-flex items-center gap-1.5 rounded-lg border border-rose-300 bg-white px-3.5 py-2 text-sm font-medium text-rose-700 shadow-sm transition-colors hover:bg-rose-50" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="rounded-xl border border-slate-200 bg-white shadow-card">
+  <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ring-1 ring-inset <%= status_badge_class(@appointment.status) %>"><%= @appointment.status %></span>
+      <span class="text-sm text-slate-500">Appointment #<%= @appointment.id %></span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-x-8 gap-y-6 px-6 py-6 sm:grid-cols-2">
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Service window</dt>
+      <dd class="mt-1.5 flex items-baseline gap-2">
+        <span class="text-base font-semibold text-slate-900"><%= fmt_date_time(@appointment.starts_at) %></span>
+        <span class="font-mono text-sm text-slate-400">→ <%= fmt_time(@appointment.ends_at) %></span>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Service</dt>
+      <dd class="mt-1.5 font-semibold text-slate-900"><%= @appointment.service_type.name %>
+        <span class="ml-1 text-sm font-normal text-slate-400"><%= @appointment.service_type.duration_minutes %> min</span></dd>
+    </div>
+
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Customer</dt>
+      <dd class="mt-1.5 flex items-center gap-2.5">
+        <span class="flex h-9 w-9 flex-none items-center justify-center rounded-full text-xs font-semibold text-white <%= avatar_color(@appointment.customer.name) %>"><%= initials(@appointment.customer.name) %></span>
+        <div>
+          <%= link_to @appointment.customer.name, customer_path(@appointment.customer), class: "block font-medium text-slate-900 hover:text-brand-700" %>
+          <span class="block text-xs text-slate-400"><%= @appointment.customer.email %></span>
+        </div>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Vehicle</dt>
+      <dd class="mt-1.5 font-medium text-slate-900"><%= "#{@appointment.vehicle.year} #{@appointment.vehicle.make} #{@appointment.vehicle.model}" %>
+        <% if @appointment.vehicle.vin.present? %>
+          <div class="font-mono text-xs text-slate-400">VIN: <%= @appointment.vehicle.vin %></div>
+        <% end %></dd>
+    </div>
+
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Dealership</dt>
+      <dd class="mt-1.5"><%= link_to @appointment.dealership.name, dealership_path(@appointment.dealership), class: "font-medium text-slate-900 hover:text-brand-700" %></dd>
+    </div>
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Technician</dt>
+      <dd class="mt-1.5 flex items-center gap-2 text-slate-900">
+        <span class="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-slate-200 text-[10px] font-semibold text-slate-600"><%= initials(@appointment.technician.name) %></span>
+        <span class="font-medium"><%= @appointment.technician.name %></span>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Service bay</dt>
+      <dd class="mt-1.5"><span class="rounded-md bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600"><%= @appointment.service_bay.name %></span></dd>
+    </div>
+    <% if @appointment.cancelled? %>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Cancelled at</dt>
+        <dd class="mt-1.5 text-slate-500"><%= fmt_date_time(@appointment.cancelled_at) %></dd>
+      </div>
+    <% end %>
+  </div>
+</div>

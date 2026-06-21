@@ -1,0 +1,49 @@
+<%= render "application/page_header",
+      title: "Add Vehicle for #{@customer.name}".html_safe,
+      actions: link_to("← Back", customer_path(@customer),
+            class: "inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50") %>
+
+<div class="max-w-xl rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+  <%= form_with model: [@customer, @vehicle], local: true do |f| %>
+    <% if @vehicle.errors.any? %>
+      <div class="mb-4 flex items-start gap-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+        <svg class="mt-0.5 h-5 w-5 flex-none text-rose-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+        <span><%= @vehicle.errors.full_messages.to_sentence %></span>
+      </div>
+    <% end %>
+
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= f.label :make, class: "block text-sm font-medium text-slate-700" %>
+          <%= f.text_field :make, autofocus: true,
+                class: "mt-1.5 block w-full rounded-lg border-slate-300 bg-white py-2 pl-3 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" %>
+        </div>
+        <div>
+          <%= f.label :model, class: "block text-sm font-medium text-slate-700" %>
+          <%= f.text_field :model,
+                class: "mt-1.5 block w-full rounded-lg border-slate-300 bg-white py-2 pl-3 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" %>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <%= f.label :year, class: "block text-sm font-medium text-slate-700" %>
+          <%= f.number_field :year, value: @vehicle.year || Time.current.year,
+                class: "mt-1.5 block w-full rounded-lg border-slate-300 bg-white py-2 pl-3 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" %>
+        </div>
+        <div>
+          <%= f.label :vin, class: "block text-sm font-medium text-slate-700" %>
+          <%= f.text_field :vin,
+                class: "mt-1.5 block w-full rounded-lg border-slate-300 bg-white py-2 pl-3 text-sm text-slate-900 shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30" %>
+          <p class="mt-1.5 text-xs text-slate-400">Optional. Must be unique if provided.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center gap-3">
+      <%= f.submit "Add vehicle",
+            class: "inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700" %>
+      <%= link_to "Cancel", customer_path(@customer), class: "text-sm font-medium text-slate-500 hover:text-slate-700" %>
+    </div>
+  <% end %>
+</div>
