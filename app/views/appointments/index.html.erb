@@ -1,11 +1,6 @@
-<% action_link = link_to new_appointment_path, class: "inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700" do %>
-  <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/></svg>
-  New appointment
-<% end %>
 <%= render "application/page_header",
       title: "Appointments",
-      subtitle: "Recent appointments across all dealerships.",
-      actions: action_link %>
+      subtitle: "Recent appointments across all dealerships." %>
 
 <% if @appointments.any? %>
   <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card">
