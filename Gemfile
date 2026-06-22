@@ -54,7 +54,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # RSpec for testing [https://rspec.info/]
-  gem "rspec-rails", "~> 7.0"
+  gem "rspec-rails", "~> 8.0"
 
   # Test data generation [https://github.com/thoughtbot/factory_bot]
   gem "factory_bot_rails"
