@@ -63,7 +63,7 @@ group :development, :test do
   gem "faker"
 
   # Common matcher helpers for RSpec [https://github.com/thoughtbot/shoulda-matchers]
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 8.0"
 
   # Detect N+1 queries in dev/test [https://github.com/salsify/goldiloader] (no — bullet)
   gem "bullet"
