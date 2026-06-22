@@ -7,6 +7,6 @@ class CreateTechnicians < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :technicians, [:dealership_id, :name], unique: true
+    add_index :technicians, [ :dealership_id, :name ], unique: true
   end
 end

@@ -7,6 +7,6 @@ class CreateTechnicianSkills < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :technician_skills, [:technician_id, :service_type_id], unique: true
+    add_index :technician_skills, [ :technician_id, :service_type_id ], unique: true
   end
 end

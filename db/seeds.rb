@@ -14,17 +14,17 @@ rotation   = ServiceType.find_or_create_by!(name: "Tire Rotation") { |s| s.durat
 inspection = ServiceType.find_or_create_by!(name: "Full Inspection") { |s| s.duration_minutes = 60 }
 
 # ---- Service bays ------------------------------------------------------------
-["Bay A", "Bay B", "Bay C"].each do |bay_name|
+[ "Bay A", "Bay B", "Bay C" ].each do |bay_name|
   ServiceBay.find_or_create_by!(dealership: dealership, name: bay_name)
 end
 
 # ---- Technicians + qualifications -------------------------------------------
 # Alice can do everything; Bob does quick services; Cara does brakes & inspection; Dan tires only.
 technicians = {
-  "Alice Wong"  => [oil_change, brake, rotation, inspection],
-  "Bob Nguyen"  => [oil_change, rotation],
-  "Cara Patel"  => [brake, inspection],
-  "Dan Rivera"  => [rotation]
+  "Alice Wong"  => [ oil_change, brake, rotation, inspection ],
+  "Bob Nguyen"  => [ oil_change, rotation ],
+  "Cara Patel"  => [ brake, inspection ],
+  "Dan Rivera"  => [ rotation ]
 }
 technicians.each do |name, services|
   tech = Technician.find_or_create_by!(dealership: dealership, name: name)

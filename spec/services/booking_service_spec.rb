@@ -15,7 +15,7 @@ RSpec.describe BookingService, type: :model do
   let(:starts_at)     { Time.utc(2035, 6, 1, 9, 0, 0) } # future
 
   before do
-    [bay_a, bay_b]
+    [ bay_a, bay_b ]
     create(:technician_skill, technician: alice, service_type: oil_change)
     create(:technician_skill, technician: bob,   service_type: brake)
   end
